@@ -166,11 +166,11 @@ async function handleLogin(event) {
       alert("Login successful!");
       window.location.reload();
     } else {
-      console.log(response);
-
       errorElement.textContent = response.message || "Login failed";
     }
   } catch (error) {
+    console.log(response);
+    console.error(error);
     loading.style.display = "none";
     errorElement.textContent = "An error occurred. Please try again.";
   }
