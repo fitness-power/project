@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <title>Fitness Power - Full App</title>
+  </head>
+  <body>
+    <!-- الشريط العلوي -->
+    <header class="navbar">
+      <div class="logo">
+        <img src="./image/IMG-20241125-WA0006.jpg" alt="Fitness Power" />
+        <span>Fitness Power</span>
+      </div>
+      <nav>
+        <a href="/" onclick="showHome()">Home</a>
+        <a href="/about.html">About us</a>
+        <a href="/vitamin.html">Cart</a>
+        <a href="/search.html">Search</a>
+      </nav>
+      <div class="buttons" id="auth-buttons">
+        <button class="login-btn" onclick="showLogin()">Log in</button>
+        <button class="signin-btn" onclick="showRegister()">Sign up</button>
+      </div>
+      <div class="buttons hidden" id="user-buttons">
+        <button class="profile-btn" onclick="showProfile()">Profile</button>
+        <button class="logout-btn" onclick="handleLogout()">Log out</button>
+      </div>
+    </header>
+
+    <!-- الصفحة الرئيسية -->
+    <main class="home-container" id="home-container">
+      <h1>Welcome to Fitness Power</h1>
+      <div class="category-container"></div>
+      <div class="loading" id="loading">Loading...</div>
+    </main>
+
+    <!-- Login Form -->
+    <main class="container hidden" id="login-container">
+      <p>
+        Don't have an account? <a href="#" onclick="showRegister()">Sign up</a>
+      </p>
+      <h1>Log in</h1>
+      <form id="login-form">
+        <div class="input-group">
+          <input
+            type="text"
+            id="login-email"
+            placeholder="Email"
+            autocomplete="email"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <p class="error-message" id="login-error"></p>
+        <span class="loading" id="loading2">Loading...</span>
+        <button type="submit" class="btn">Log in</button>
+      </form>
+    </main>
+
+    <!-- Sign Up Form -->
+    <main class="container hidden" id="register-container">
+      <p>
+        Already have an account? <a href="#" onclick="showLogin()">Log in</a>
+      </p>
+      <h1>Sign in</h1>
+      <form id="register-form">
+        <div class="input-group">
+          <input
+            type="text"
+            id="register-username"
+            placeholder="Full Name"
+            required
+            minlength="3"
+            maxlength="50"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="email"
+            id="register-email"
+            placeholder="Email Address"
+            required
+            minlength="5"
+            maxlength="255"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="password"
+            id="register-password"
+            placeholder="Password"
+            required
+            minlength="6"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="password"
+            id="register-confirm-password"
+            placeholder="Confirm Password"
+            required
+            minlength="6"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="text"
+            id="register-phone"
+            placeholder="Phone Number"
+            required
+            pattern="\d{10,15}"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="text"
+            id="register-address"
+            placeholder="Address"
+            required
+          />
+        </div>
+        <p class="error-message" id="register-error"></p>
+        <div class="loading" id="loading3">Loading...</div>
+        <button type="submit" class="btn">Sign in</button>
+      </form>
+    </main>
+
+    <script type="module" src="./js/index.js"></script>
+    <script>
+      function showHome() {
+        document.getElementById("home-container").classList.remove("hidden");
+        document.getElementById("login-container").classList.add("hidden");
+        document.getElementById("register-container").classList.add("hidden");
+      }
+
+      function showLogin() {
+        document.getElementById("home-container").classList.add("hidden");
+        document.getElementById("login-container").classList.remove("hidden");
+        document.getElementById("register-container").classList.add("hidden");
+      }
+
+      function showRegister() {
+        document.getElementById("home-container").classList.add("hidden");
+        document.getElementById("login-container").classList.add("hidden");
+        document
+          .getElementById("register-container")
+          .classList.remove("hidden");
+      }
+
+      function showProfile() {
+        // Logic to show profile page
+        alert("Profile page coming soon!");
+      }
+
+      function handleLogout() {
+        localStorage.removeItem("token");
+        updateAuthButtons();
+        showHome();
+      }
+
+      function updateAuthButtons() {
+        const token = localStorage.getItem("token");
+        if (token) {
+          document.getElementById("auth-buttons").classList.add("hidden");
+          document.getElementById("user-buttons").classList.remove("hidden");
+        } else {
+          document.getElementById("auth-buttons").classList.remove("hidden");
+          document.getElementById("user-buttons").classList.add("hidden");
+        }
+      }
+
+      function checkUrlForProductDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get("productId");
+        const categoryId = urlParams.get("categoryId");
+        if (productId) {
+          import("./js/index.js").then((module) => {
+            module.showProductDetails(productId, categoryId);
+          });
+        } else {
+          import("./js/index.js").then((module) => {
+            module.showCategories();
+          });
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", checkUrlForProductDetails);
+      window.addEventListener("DOMContentLoaded", updateAuthButtons);
+    </script>
+  </body>
+</html>

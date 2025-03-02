@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Search</title>
+    <link rel="stylesheet" href="./css/search.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body onload="populateTypes()">
+    <h1>Search Products</h1>
+    <div class="search-container">
+      <input type="text" id="keyword" placeholder="Search by name..." />
+      <input type="number" id="minPrice" placeholder="Min Price" />
+      <input type="number" id="maxPrice" placeholder="Max Price" />
+      <select id="type">
+        <option value="all">All Types</option>
+        <option value="supplement">Supplements</option>
+        <option value="vitamin">Vitamins</option>
+      </select>
+      <button onclick="searchProducts()">Search</button>
+    </div>
+    <div class="results" id="results"></div>
+    <div class="loading" id="loading">Loading...</div>
+    <script type="module" src="./js/search.js"></script>
+  </body>
+</html>
