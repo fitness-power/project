@@ -7,7 +7,7 @@ export async function postData(endpoint = "", data = {}) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-    mode: "cors", // Added mode option
+    mode: "cors",
   });
   return response.json();
 }
@@ -20,7 +20,7 @@ export async function postDataWithToken(endpoint = "", data = {}, token = "") {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
-    mode: "cors", // Added mode option
+    mode: "cors",
   });
   return response.json();
 }

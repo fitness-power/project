@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">
+        <img src="./image/IMG-20241125-WA0006.jpg" alt="Fitness Power" />
+        <span>Fitness Power</span>
+      </div>
+      <nav>
+        <a href="/" onclick="showHome()">Home</a>
+        <a href="/about.html">About us</a>
+        <a href="/cart.html">Cart</a>
+        <a href="/search.html">Search</a>
+      </nav>
+      <div class="buttons hidden" id="user-buttons">
+        <a class="profile-btn" href="./profile.html">Profile</a>
+        <button class="logout-btn" onclick="handleLogout()">Log out</button>
+      </div>
+    </header>
+
+    <main class="cart-container">
+      <h1>Your Cart</h1>
+      <div class="loading" id="loading">Loading...</div>
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-summary">
+        <p>Total Price: <span id="total-price">$0.00</span></p>
+        <button class="btn" onclick="checkout()">Checkout</button>
+        <button class="btn clear-cart-btn" onclick="clearCart()">
+          Clear Cart
+        </button>
+      </div>
+    </main>
+
+    <script type="module" src="js/cart.js"></script>
+    <script>
+      function handleLogout() {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      }
+
+      function updateAuthButtons() {
+        const token = localStorage.getItem("token");
+        if (token) {
+          document.getElementById("user-buttons").classList.remove("hidden");
+        } else {
+          window.location.href = "/login.html";
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", updateAuthButtons);
+    </script>
+  </body>
+</html>

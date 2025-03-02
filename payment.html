@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness Power - User & Payment</title>
+    <link rel="stylesheet" href="./css/payment.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">
+        <img src="./image/IMG-20241125-WA0006.jpg" alt="Fitness Power" />
+        <span>Fitness Power</span>
+      </div>
+      <nav>
+        <a href="/" onclick="showHome()">Home</a>
+        <a href="/about.html">About us</a>
+        <a href="/cart.html">Cart</a>
+        <a href="/search.html">Search</a>
+      </nav>
+      <div class="buttons hidden" id="user-buttons">
+        <a class="profile-btn" href="./profile.html">Profile</a>
+        <button class="logout-btn" onclick="handleLogout()">Log out</button>
+      </div>
+    </header>
+    <div id="payment-container" class="container">
+      <h1>Payment Methods</h1>
+      <div class="form-group">
+        <label for="payment">Select Payment Method:</label>
+        <select id="payment">
+          <option value="cash">Cash</option>
+          <option value="visa">Visa</option>
+        </select>
+      </div>
+      <button class="btn confirm" onclick="confirmPayment()">
+        Confirm Payment
+      </button>
+    </div>
+
+    <script type="module" src="js/payment.js"></script>
+    <script>
+      function handleLogout() {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      }
+
+      function updateAuthButtons() {
+        const token = localStorage.getItem("token");
+        if (token) {
+          document.getElementById("user-buttons").classList.remove("hidden");
+        } else {
+          window.location.href = "/login.html";
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", updateAuthButtons);
+    </script>
+  </body>
+</html>

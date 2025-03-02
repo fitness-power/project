@@ -3,7 +3,7 @@ import url from "./url.js";
 export async function getData(endpoint) {
   try {
     const response = await fetch(`${url}${endpoint}`, {
-      mode: "cors", // Added mode option
+      mode: "cors",
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -22,7 +22,7 @@ export async function getDataWithToken(endpoint, token) {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      mode: "cors", // Added mode option
+      mode: "cors",
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

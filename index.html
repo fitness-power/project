@@ -16,7 +16,7 @@
       <nav>
         <a href="/" onclick="showHome()">Home</a>
         <a href="/about.html">About us</a>
-        <a href="/vitamin.html">Cart</a>
+        <a href="/cart.html">Cart</a>
         <a href="/search.html">Search</a>
       </nav>
       <div class="buttons" id="auth-buttons">
@@ -24,7 +24,7 @@
         <button class="signin-btn" onclick="showRegister()">Sign up</button>
       </div>
       <div class="buttons hidden" id="user-buttons">
-        <button class="profile-btn" onclick="showProfile()">Profile</button>
+        <a class="profile-btn" href="./profile.html">Profile</a>
         <button class="logout-btn" onclick="handleLogout()">Log out</button>
       </div>
     </header>
@@ -154,11 +154,6 @@
         document
           .getElementById("register-container")
           .classList.remove("hidden");
-      }
-
-      function showProfile() {
-        // Logic to show profile page
-        alert("Profile page coming soon!");
       }
 
       function handleLogout() {

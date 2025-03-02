@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+  </head>
+  <body>
+    <!-- الشريط العلوي -->
+    <header class="navbar">
+      <div class="logo">
+        <img src="./image/IMG-20241125-WA0006.jpg" alt="Fitness Power" />
+        <span>Fitness Power</span>
+      </div>
+      <nav>
+        <a href="/" onclick="showHome()">Home</a>
+        <a href="/about.html">About us</a>
+        <a href="/cart.html">Cart</a>
+        <a href="/search.html">Search</a>
+      </nav>
+      <div class="buttons" id="auth-buttons">
+        <button class="login-btn" onclick="showLogin()">Log in</button>
+        <button class="signin-btn" onclick="showRegister()">Sign up</button>
+      </div>
+      <div class="buttons hidden" id="user-buttons">
+        <a class="profile-btn" href="./profile.html">Profile</a>
+        <button class="logout-btn" onclick="handleLogout()">Log out</button>
+      </div>
+    </header>
+
+    <div class="profile-container">
+      <div class="profile-header">
+        <h1 class="profile-name">User Name</h1>
+      </div>
+      <div class="profile-details"></div>
+      <div class="profile-actions">
+        <button class="btn logout-btn" onclick="handleLogout()">Logout</button>
+      </div>
+    </div>
+
+    <script type="module" src="js/profile.js"></script>
+    <script>
+      function updateAuthButtons() {
+        const token = localStorage.getItem("token");
+        if (token) {
+          document.getElementById("auth-buttons").classList.add("hidden");
+          document.getElementById("user-buttons").classList.remove("hidden");
+        } else {
+          document.getElementById("auth-buttons").classList.remove("hidden");
+          document.getElementById("user-buttons").classList.add("hidden");
+        }
+      }
+      function handleLogout() {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      }
+      window.addEventListener("DOMContentLoaded", () => {
+        updateAuthButtons();
+      });
+    </script>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 import { getData } from "./getData.js";
-import { postData } from "./postData.js";
+import { postDataWithToken } from "./postData.js";
 
 function addBackArrow(container, callback) {
   document
@@ -101,11 +101,15 @@ export async function showProductDetails(productId, category) {
           <ul>
             <li><strong>Product:</strong> ${product.title}</li>
             <li><strong>Brand:</strong> ${product.brand}</li>
-            <li><strong>Nutritional value:</strong> ${product.nutritionalValue}</li>
+            <li><strong>Nutritional value:</strong> ${product.nv}${
+      product.type.category.title === "vitamins" ? "mg" : ""
+    }</li>
             <li><strong>Features:</strong> ${product.type.title}</li>
           </ul>
           <p class="price">Price: $${product.price}</p>
-          <a href="#" class="btn">Add to Cart</a>
+          <a href="#" class="btn" onclick="addToCart('${
+            product._id
+          }')">Add to Cart</a>
         </div>
       </div>
     `;
@@ -220,7 +224,32 @@ async function handleSignUp(event) {
   }
 }
 
+async function addToCart(productId) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "/login.html";
+    return;
+  }
+
+  try {
+    const res = await postDataWithToken(
+      "/cart",
+      { products: [{ item: productId, quantity: 1 }] },
+      token
+    );
+    if (res.status === "success") {
+      alert("Product added to cart!");
+    } else {
+      console.error("Failed to add product to cart");
+    }
+  } catch (error) {
+    console.error("Error adding product to cart:", error);
+  }
+}
+
 document.getElementById("login-form").addEventListener("submit", handleLogin);
 document
   .getElementById("register-form")
   .addEventListener("submit", handleSignUp);
+
+window.addToCart = addToCart;
