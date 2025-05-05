@@ -3,7 +3,7 @@ import { getDataWithToken } from "./getData.js";
 async function loadUserProfile() {
   const token = localStorage.getItem("token");
   if (!token) {
-    window.location.href = "/login.html";
+    window.location.href = "/";
     return;
   }
 

@@ -27,6 +27,10 @@
         <a class="profile-btn" href="./profile.html">Profile</a>
         <button class="logout-btn" onclick="handleLogout()">Log out</button>
       </div>
+      <div class="buttons hidden" id="admin-buttons">
+        <a class="profile-btn" href="./dashboard.html">Dashboard</a>
+        <button class="logout-btn" onclick="handleLogout()">Log out</button>
+      </div>
     </header>
 
     <!-- الصفحة الرئيسية -->
@@ -164,9 +168,18 @@
 
       function updateAuthButtons() {
         const token = localStorage.getItem("token");
+        const userRole = localStorage.getItem("userRole");
+        const profileButton = document.getElementsByClassName("profile-btn");
+
         if (token) {
-          document.getElementById("auth-buttons").classList.add("hidden");
-          document.getElementById("user-buttons").classList.remove("hidden");
+          if (userRole === "admin") {
+            document.getElementById("auth-buttons").classList.add("hidden");
+            document.getElementById("user-buttons").classList.add("hidden");
+            document.getElementById("admin-buttons").classList.remove("hidden");
+          } else {
+            document.getElementById("auth-buttons").classList.add("hidden");
+            document.getElementById("user-buttons").classList.remove("hidden");
+          }
         } else {
           document.getElementById("auth-buttons").classList.remove("hidden");
           document.getElementById("user-buttons").classList.add("hidden");
