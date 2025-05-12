@@ -165,6 +165,33 @@ button:hover {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* New Product Form Styles */
+#add-product {
+  margin-top: 2rem;
+}
+
+#add-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#add-product-form label {
+  font-weight: bold;
+  color: orange;
+}
+
+#add-product-form input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+#add-product-form button {
+  align-self: flex-start;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   main {

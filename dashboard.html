@@ -23,6 +23,49 @@
         <h2>Orders</h2>
         <div id="order-list"></div>
       </section>
+      <section id="add-product">
+        <h2>Add New Product</h2>
+        <form id="add-product-form" onsubmit="addProduct(event)">
+          <label for="product-title">Title:</label>
+          <input type="text" id="product-title" name="title" required />
+
+          <label for="product-image">Image:</label>
+          <input
+            type="file"
+            id="product-image"
+            name="image"
+            accept="image/*"
+            required
+          />
+
+          <label for="product-category">Category:</label>
+          <select id="product-category" name="category" required>
+            <option value="">Loading categories...</option>
+          </select>
+
+          <label for="product-price">Price:</label>
+          <input type="number" id="product-price" name="price" required />
+
+          <label for="product-brand">Brand:</label>
+          <input type="text" id="product-brand" name="brand" required />
+
+          <label for="product-nutritional-value">Nutritional Value:</label>
+          <input
+            type="text"
+            id="product-nutritional-value"
+            name="nutritionalValue"
+            required
+          />
+
+          <button type="submit">Add Product</button>
+        </form>
+      </section>
+      <div
+        id="loading"
+        style="display: none; text-align: center; color: orange"
+      >
+        Loading...
+      </div>
     </main>
     <script src="js/dashboard.js" type="module"></script>
   </body>

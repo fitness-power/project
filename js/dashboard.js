@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   fetchUserInfo();
   fetchOrders();
   fetchProducts();
+  populateCategoriesAndTypes();
 });
 
 async function checkAdmin() {
@@ -125,7 +126,7 @@ async function fetchProducts() {
           <div class="details">
             <h3>${product.title}</h3>
             <a href="index.html?productId=${product._id}&categoryId=${product.type.category._id}" class="show-details">show details</a>
-            <button class="delete-product" data-product-id="${product._id}">Delete</button>
+            <button class="delete-product" onclick="deleteProduct('${product._id}')">Delete</button>
           </div>
         `;
         productListContainer.appendChild(productDiv);
@@ -138,58 +139,12 @@ async function fetchProducts() {
   }
 }
 
-// Adding CRUD operations for products
-
-async function addProduct(product) {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch("/product", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(product),
-    });
-    const data = await response.json();
-    if (data.status === "success") {
-      alert("Product added successfully!");
-      fetchProducts();
-    } else {
-      console.error("Error adding product:", data);
-    }
-  } catch (error) {
-    console.error("Error adding product:", error);
-  }
-}
-
-async function updateProduct(productId, updatedProduct) {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`/product/${productId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(updatedProduct),
-    });
-    const data = await response.json();
-    if (data.status === "success") {
-      alert("Product updated successfully!");
-      fetchProducts();
-    } else {
-      console.error("Error updating product:", data);
-    }
-  } catch (error) {
-    console.error("Error updating product:", error);
-  }
-}
-
 async function deleteProduct(productId) {
   try {
     const token = localStorage.getItem("token");
     const response = await deleteDataWithToken(`/product/${productId}`, token);
+    console.log(response);
+
     if (response.status === "success") {
       alert("Product deleted successfully!");
       fetchProducts();
@@ -254,43 +209,71 @@ async function setOrderDelivered(orderId) {
   }
 }
 
-// Integrating CRUD operations into the UI
-function setupProductActions() {
-  const addProductForm = document.getElementById("add-product-form");
-  addProductForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const product = {
-      title: event.target.title.value,
-      price: event.target.price.value,
-      brand: event.target.brand.value,
-      image: event.target.image.value,
-    };
-    addProduct(product);
-  });
+async function populateCategoriesAndTypes() {
+  const loading = document.getElementById("loading");
+  loading.style.display = "block";
+  const res = await getDataWithToken("/types", localStorage.getItem("token"));
+  loading.style.display = "none";
 
-  const productListContainer = document.getElementById("product-list");
-  productListContainer.addEventListener("click", (event) => {
-    if (event.target.classList.contains("delete-product")) {
-      const productId = event.target.dataset.productId;
-      deleteProduct(productId);
-    } else if (event.target.classList.contains("edit-product")) {
-      const productId = event.target.dataset.productId;
-      const updatedProduct = {
-        title: prompt("Enter new title:"),
-        price: prompt("Enter new price:"),
-        brand: prompt("Enter new brand:"),
-        image: prompt("Enter new image URL:"),
-      };
-      updateProduct(productId, updatedProduct);
-    }
-  });
+  const categorySelect = document.getElementById("product-category");
+  categorySelect.innerHTML = "<option value=''>Select Category</option>";
+
+  if (res.status === "success" && res.data.length > 0) {
+    res.data.forEach((type) => {
+      const option = document.createElement("option");
+      option.value = type._id;
+      option.textContent = `${type.category.title} (${type.title})`;
+      categorySelect.appendChild(option);
+    });
+  } else {
+    console.error("Failed to fetch categories and types");
+  }
 }
 
+async function addProduct(event) {
+  event.preventDefault(); // Prevent form submission from reloading the page
+
+  const token = localStorage.getItem("token");
+  const title = document.getElementById("product-title").value;
+  const imageFile = document.getElementById("product-image").files[0];
+  const category = document.getElementById("product-category").value;
+  const price = document.getElementById("product-price").value;
+  const brand = document.getElementById("product-brand").value;
+  const nutritionalValue = document.getElementById(
+    "product-nutritional-value"
+  ).value;
+  const formData = new FormData();
+  console.log(imageFile);
+
+  formData.append("title", title);
+  formData.append("image", imageFile);
+  formData.append("type", category);
+  formData.append("price", price);
+  formData.append("brand", brand);
+  formData.append("nv", nutritionalValue);
+
+  try {
+    const response = await postDataWithToken("/product", formData, token);
+    console.log(response);
+
+    if (response.status === "success") {
+      alert("Product added successfully!");
+      fetchProducts(); // Refresh the product list
+      document.getElementById("add-product-form").reset(); // Clear the form
+    } else {
+      console.error("Error adding product:", result);
+    }
+  } catch (error) {
+    console.error("Error adding product:", error);
+  }
+}
+
+// Integrating CRUD operations into the UI
+
 // Call setupProductActions after DOM content is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  setupProductActions();
-});
 
 window.deleteOrder = deleteOrder;
 window.setOrderPaid = setOrderPaid;
 window.setOrderDelivered = setOrderDelivered;
+window.deleteProduct = deleteProduct;
+window.addProduct = addProduct;

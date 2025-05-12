@@ -1,3 +1,3 @@
-const mainUrl = "https://egypt-tours-backend.onrender.com";
+const mainUrl = "http://localhost:8000";
 const url = `${mainUrl}/api/v1`;
 export default url;
